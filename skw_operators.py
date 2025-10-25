@@ -6,7 +6,8 @@ from .functions.transfer_shape_keys import transfer_shape_keys, IsNotBoundExcept
 from .functions.smooth_shape_keys import smooth_shape_keys
 from .functions.surface_deform import transfer_shapekeys
 from .functions.restore_details import restore_details
-
+import os
+import json
 
 REFRESH_LIST_OPTION = [
     ('REFRESH', 'Refresh', '', 0),
@@ -41,6 +42,11 @@ def execute_shape_key_wrap(self, context: bpy.types.Context) -> None:
     skw = context.scene.skw_prop   
     
     shape_keys = skw_sk_list.get_enabled_list() if skw.use_shape_key_list else None
+
+    self.report({'INFO'}, "selected shapes_file: {}".format(skw.target_shapes_file))
+    if os.path.exists(skw.target_shapes_file):
+        with open(skw.target_shapes_file, "r", encoding="utf-8") as f:
+            shape_keys = json.load(f)
 
     if skw.surface_deform_method == 'SQUEEZY_PIXELS':
         created_sks = dict()

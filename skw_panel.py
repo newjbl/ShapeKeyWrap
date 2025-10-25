@@ -64,7 +64,7 @@ class SKW_PT_object_mode(bpy.types.Panel):
     bl_label = 'Shape Key Wrap'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = 'Tools'
+    bl_category = 'Tools-SKW'
     bl_context = 'objectmode'
 
     def draw(self, context):                
@@ -137,6 +137,12 @@ class SKW_PT_object_mode(bpy.types.Panel):
             
             split.operator(SKW_OT_transfer_shape_keys.bl_idname, text='Transfer Shape Keys', icon='ARROW_LEFTRIGHT')
             split.prop(skw, 'use_shape_key_list', text='Use List', toggle=True)
+
+            col.separator()
+            col.label(text='Select Target Type V0.9')
+            #col.prop(skw, 'target_type', expand=True)
+            col.prop(skw, 'target_shapes_file', text='file')
+
         
         box = layout.box()
         if dropdown(box, skw, 'show_utilities_panel', 'Utils', icon='TOOL_SETTINGS'):

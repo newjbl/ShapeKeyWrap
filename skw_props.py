@@ -211,6 +211,13 @@ class SKW_Property(bpy.types.PropertyGroup):
         default='Group'
     )
 
+    target_shapes_file: bpy.props.StringProperty(
+        name="selected file",
+        description="select the file by the path",
+        subtype='FILE_PATH',
+    )
+
+
 
 classes = [SKW_ListItem, SKW_Property, SKW_ShapeKeyList]
 
