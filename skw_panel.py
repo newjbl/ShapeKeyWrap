@@ -139,11 +139,10 @@ class SKW_PT_object_mode(bpy.types.Panel):
             split.prop(skw, 'use_shape_key_list', text='Use List', toggle=True)
 
             col.separator()
-            col.label(text='Select Target Type V0.9')
-            #col.prop(skw, 'target_type', expand=True)
+            col.label(text='Select Target Type V1.0')
             col.prop(skw, 'target_shapes_file', text='file')
+            col.label(text=f"Shape key number in Json file: {skw.shape_key_count}", icon='INFO')
 
-        
         box = layout.box()
         if dropdown(box, skw, 'show_utilities_panel', 'Utils', icon='TOOL_SETTINGS'):
             sub_box = box.box()

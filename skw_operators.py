@@ -43,10 +43,10 @@ def execute_shape_key_wrap(self, context: bpy.types.Context) -> None:
     
     shape_keys = skw_sk_list.get_enabled_list() if skw.use_shape_key_list else None
 
-    self.report({'INFO'}, "selected shapes_file: {}".format(skw.target_shapes_file))
-    if os.path.exists(skw.target_shapes_file):
-        with open(skw.target_shapes_file, "r", encoding="utf-8") as f:
-            shape_keys = json.load(f)
+    print("shape_key_count: %s" % (skw.shape_key_count))
+    if skw.shape_key_count > 0:
+        shape_keys = skw.parsed_shape_keys.split(', ')
+        print("shape_keys: %s" % (shape_keys))
 
     if skw.surface_deform_method == 'SQUEEZY_PIXELS':
         created_sks = dict()

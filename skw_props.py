@@ -1,6 +1,7 @@
 import bpy
 from typing import List
-
+import os
+import json
 
 SMOOTH_TYPES = [
     ('SIMPLE', 'Simple', 'Use the average of adjacent edge-vertices', 1),
@@ -211,13 +212,40 @@ class SKW_Property(bpy.types.PropertyGroup):
         default='Group'
     )
 
-    target_shapes_file: bpy.props.StringProperty(
-        name="selected file",
-        description="select the file by the path",
-        subtype='FILE_PATH',
+    parsed_shape_keys: bpy.props.StringProperty(
+        default="",
+        options={'HIDDEN'},  # 不在UI中显示，仅作为内部存储
+        description="Parsed shape keys data from the selected file"
     )
 
+    target_shapes_file: bpy.props.StringProperty(
+        name="Selected File",
+        description="Select the shape keys file",
+        subtype='FILE_PATH',
+        update=lambda self, context: update_target_shapes_file(self, context)
+    )
 
+    shape_key_count: bpy.props.IntProperty(
+        default=0,
+        description="Number of shape keys in the selected JSON file"
+    )
+
+def update_target_shapes_file(self: SKW_Property, context: bpy.types.Context):
+    file_path = self.target_shapes_file
+    if not os.path.exists(file_path):
+        print(f"File not found: {file_path}")
+        self.parsed_shape_keys = ""
+        return
+
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            shape_keys_data = json.load(f)
+            self.shape_key_count = len(shape_keys_data)
+            self.parsed_shape_keys = ', '.join(shape_keys_data)
+            print(f"Successfully loaded shape keys from: {self.parsed_shape_keys}")
+    except json.JSONDecodeError:
+        print(f"Invalid JSON format in: {file_path}")
+        self.parsed_shape_keys = ""
 
 classes = [SKW_ListItem, SKW_Property, SKW_ShapeKeyList]
 
